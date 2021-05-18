@@ -1,8 +1,9 @@
 # Before start
 - Editor: VSCode
 - Environment: NodeJS
+- Run `npm install -g typescript ts-node`
 
-# JavaScript
+# JavaScript / TypeScript
 - Semicolons
   - JS is a very lenient language
   - However, to prevent issues, just add a semicolon after each statement
@@ -14,7 +15,22 @@
   - (`let` and `const` are block-scoped, `var` is function-scoped)
   - Redeclaring variables declared by `var` is OK;  
     Redeclaring variables declared by `let` and `const` is **ERROR**
-- Types
+  - Example code:
+    ```ts
+    // OK
+    for (var i = 0; i < 5; i++)
+      console.log(i);
+    console.log(i); // 5
+
+    // NOT OK
+    for (let i = 0; i < 5; i++)
+      console.log(i);
+    console.log(i); // Uncaught ReferenceError: i is not defined
+    ```
+- What is TypeScript?
+  - JavaScript with type
+  - Is a transpiler that compiles to JavaScript
+- Types → TypeScript, with syntax
   - number (double, but int if it is small enough)
     - operators: `+`, `-`, `*`, `/`, `%`, 
   - (big integer: e.g. `1n`, `2n`)
@@ -37,26 +53,27 @@
     - `typeof null === "object"`, `typeof undefined === "undefined"`
   - `RegExp`
   - `Map`, `Set`, etc
+- Comparison: use `===` and `!==` instead of `==` and `!=` unless you have very good reasons (No you don't)
 - Functions
   - normal function:
-    ```js
-    function add1(x) {
+    ```ts
+    function add1(x: number): number {
       return x + 1;
     }
-    function mult(x, y) {
+    function mult(x: number, y: number): number {
       return x * y;
     }
     ```
   - arrow function:
-    ```js
-    const add1 = (x) => x + 1;
-    const mult = (x, y) => x * y;
+    ```ts
+    const add1 = (x: number): number => x + 1;
+    const mult = (x: number, y: number): number => x * y;
     // also ok
-    const add2 = x => x + 1;
+    const add2 = (x: number) => x + 1;
     ```
   - (normal functions can be used before declaration)
   - difference between normal function and arrow function: `this`
-    ```js
+    ```ts
     const obj = { val: 1 };
     obj.fn1 = function() { return this.val; }
     obj.fn2 = () => this.val; // the this here is the this in the environment
@@ -64,7 +81,7 @@
     console.log(obj.fn2()); // undefined
     ```
   - (function expression and function declaration)
-    ```js
+    ```ts
     function d() { return 3; }
     const e = function f() { return 4; }
 
@@ -75,14 +92,14 @@
 - Destructuring statements and spread operator
   - allowed in many places
   - in assignments: 
-    ```js 
-    let a, b;
+    ```ts 
+    let a: number, b: number;
     [a, b] = [1];       // a is 1, b is undefined
     [a, b] = [1, 2];    // a is 1, b is 2
     [a, b] = [1, 2, 3]; // a is 1, b is 2
     ```
   - spread operator:
-    ```js
+    ```ts
     const a = [1, 2, 3];
     const b = [4, 5, 6];
     console.log([-1, ...a, ...b, 8]); // [-1, 1, 2, 3, 4, 5, 6, 8]
@@ -91,7 +108,7 @@
 - Promise
   - for writing asynchronous functions
   - introduced to solve the callback hell problem
-    ```js
+    ```ts
     // before promise
     calculate1((result1) => {
       calculate2((result2) => {
@@ -135,7 +152,7 @@
     ```
   - `await x = x` if `x` is not a promise 
   - `await` must be used in an `async` function: (in future may be different, search for "top level await")
-    ```js
+    ```ts
     async function test() {
       await ... // ok
     }
@@ -143,7 +160,7 @@
     ```
   - how a promise works:  
     (`setTimeout(fn, delay)`: runs `fn` after `delay` **microseconds**)
-    ```js
+    ```ts
     const p = new Promise((resolve, reject) => {
       setTimeout(() => {
         resolve("ok");
@@ -178,17 +195,17 @@
   - `node <filename.js>` to run the file
 - First project: making a basic web server with Express
   - This can be done without installing any other libraries (`http` is builtin) but `express` makes it easier
-  - Create a project and `npm install express`
+  - Create a project and `npm install express`, and then `npm install -D @types/node @types/express`
   - Start with sample code:
-    ```js
-    const express = require("express");
+    ```ts
+    import * as express from "express";
+
     const app = express();
 
-    app.get("/", (req, res) => {
-      res.end("Hello, world");
+    app.get("/", (req: express.Request, res: express.Response) => {
+        res.end("Hello");
     });
-  
-    // listen at port 3000
+
     app.listen(3000);
     ```
     Very useful pages: [Express API documentation](https://expressjs.com/ja/api.html) (learn to read documentation!)
@@ -205,18 +222,18 @@
   - Middlewares:
     - `app.use(middleware)` to use middleware
     - Introduce: `body-parser`
-      - First install using `npm install body-parser`
+      - First install using `npm install body-parser` and then `npm install -D @types/body-parser`
       - Then modify code
-        ```js
+        ```ts
         const app = express();
         // add these lines
-        const bodyParser = require("body-parser");
+        import * as bodyParser from "body-parser";
         app.use(bodyParser.json()); // allow handling JSON in POST
         // remaining code below...
         ```
       - Try checking `req.body` before and after in any `POST` route
     - (to write your own middleware:)
-      ```js
+      ```ts
       app.use((req, res, next) => {
         if (Math.random() < 0.9) {
           next();
