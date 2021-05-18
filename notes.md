@@ -133,6 +133,14 @@
     const combined = result1 + result2 + result3;
     console.log(combined);
     ```
+  - `await x = x` if `x` is not a promise 
+  - `await` must be used in an `async` function: (in future may be different, search for "top level await")
+    ```js
+    async function test() {
+      await ... // ok
+    }
+    await ... // NOT ok
+    ```
   - how a promise works:  
     (`setTimeout(fn, delay)`: runs `fn` after `delay` **microseconds**)
     ```js
@@ -227,12 +235,60 @@
 - Self study: code style
   - `ESLint`, `prettier` are commonly used now
 
+# Pre-react: HTML, CSS and JS
+
+- Do we really have enough time?
+- Quite important
+- Basic HTML5
+  ```html
+  <!DOCTYPE html>
+  <html>
+    <head>
+      <!-- Comment -->
+      <!-- Notice: no close tag for tags like meta, link, img (called void elements) -->
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <link rel="stylesheet" href="stylesheet.css">
+      <title>Title here</title>
+    </head>
+    <body>
+      <h1>Header 1</h1>
+      <h2>Header 2</h2>
+      <p>Paragraph</p>
+
+      <!-- div and span: commonly used for layout, criticized for not being semantic -->
+      <div>Div Element</div>
+      <span>Span Element</span>
+
+      <script src="script.js"></script>
+    </body>
+  </html>
+  ```
 
 # React
+
+- Environment setup
+  - Use `create-react-app`
+  - There are better environment (e.g. `snowpack`, `esbuild`) but `create-react-app` is the easiest to setup
+- React: background (why React?)
+  - Write complicated applications by combining small(er) components
+  - Describe view with pure functions, and auto update
+  - Easy to reuse components *with logic* written by others
+- React basics
+- Class-based component (`state`, `setState`)
+- Functional component (Hooks)
 
 
 # React Native
 
 
+
 # GraphQL
 
+
+
+# Other tools
+
+- Learn how to use Git:
+  - Basic: `git init`, `git add`, `git commit`, `git push`, `git status`
+  - Very useful: `git diff`, `git log`
+  - Useful: `git branch`, `git checkout`
