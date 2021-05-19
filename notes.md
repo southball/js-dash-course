@@ -292,8 +292,94 @@
   - Easy to reuse components *with logic* written by others
 - React basics
 - Class-based component (`state`, `setState`)
-- Functional component (Hooks)
+  ```ts
+  import React from 'react';
 
+  type Props = {
+    startValue: number;
+  };
+
+  type State = {
+    count: number;
+  }
+
+  class Counter extends React.Component<Props, State> {
+    constructor(props: Props) {
+      super(props);
+      this.state = {
+        count: this.props.startValue
+      };
+    }
+
+    add1() {
+      this.setState({ count: this.state.count + 1 });
+    }
+
+    render() {
+      return (
+        <div>
+          Count: {this.state.count}<br />
+          <button onClick={this.add1.bind(this)}>Add 1</button>
+          <button onClick={() => {
+            this.setState({ count: this.state.count + 5 });
+          }}>Add 5</button>
+          {this.props.children}
+          {this.props.children}
+        </div>
+      )
+    }
+  }
+
+  function App() {
+    return (
+      <Counter startValue={5}>
+        <div>Hello,world!</div>
+      </Counter>
+    )
+  }
+
+  export default App;
+  ```
+- Functional component (Hooks)
+  ```ts
+  import React from 'react';
+
+  type Props = {
+    initialCount: number,
+  }
+  function Counter(props: React.PropsWithChildren<Props>) {
+    let [count, setCount] = React.useState(props.initialCount);
+
+    return (
+      <div>
+        Count: {count}<br />
+        <button onClick={() => {
+          setCount(count + 1);
+        }}>Add 1</button>
+        <button onClick={() => {
+          setCount(count + 5);
+        }}>Add 5</button>
+        {props.children}
+      </div>
+    );
+  }
+
+  function App() {
+    return (
+      <Counter initialCount={5}>
+        Test
+      </Counter>
+    )
+  }
+
+  export default App;
+  ```
+- Hooks:
+  - Always make sure the hooks are called in the same order, and called always
+  - As a general rule of thumb, **never** put hooks in `if` statements or `while` loops
+  - `useState`, `useEffect` are the most commonly used hooks
+  - Many hooks are defined on top of these hooks
+- Important library: [React Router](https://reactrouter.com/)
 
 # React Native
 
@@ -309,3 +395,12 @@
   - Basic: `git init`, `git add`, `git commit`, `git push`, `git status`
   - Very useful: `git diff`, `git log`
   - Useful: `git branch`, `git checkout`
+- Yarn and NPM 1 to 1:
+  - `npm install` ⇔ `yarn`
+  - `npm install <package>` ⇔ `yarn add <package>`
+  - `npm run start` ⇔ `yarn start`
+  - `npm run build` ⇔ `yarn build`
+
+# Roadmap
+
+[roadmap.sh/frontend](https://roadmap.sh/frontend)
